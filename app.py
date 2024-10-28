@@ -1,7 +1,4 @@
 from flask import Flask, jsonify
-
-# pip install --upgrade Flask Werkzeug
-
 from controllers.cpf_controller import CPFController
 from controllers.cnpj_controller import CNPJController
 
