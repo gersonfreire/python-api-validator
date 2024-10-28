@@ -19,3 +19,5 @@ class CPFController:
             return response
         except Exception as e:
             raise e
+        
+# http://127.0.0.1:9002/validarcpf/12345678909        
