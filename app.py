@@ -26,3 +26,5 @@ def gerar_cnpj():
 
 if __name__ == '__main__':
     app.run(port=9002, debug=True)
+
+# http://127.0.0.1:9002/validarCpf/12345678909
