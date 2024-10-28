@@ -32,6 +32,11 @@ def gerar_cnpj():
 if __name__ == '__main__':
     ssl_key_path = os.getenv('SSL_KEY_PATH')
     ssl_cert_path = os.getenv('SSL_CERT_PATH')
-    app.run(host='0.0.0.0', port=9002, debug=True, ssl_context=(ssl_cert_path, ssl_key_path))
+    
+    # Check if SSL certificate files exist
+    if ssl_key_path and ssl_cert_path and os.path.exists(ssl_key_path) and os.path.exists(ssl_cert_path):
+        app.run(host='0.0.0.0', port=9002, debug=True, ssl_context=(ssl_cert_path, ssl_key_path))
+    else:
+        app.run(host='0.0.0.0', port=9002, debug=True)
 
 # http://127.0.0.1:9002/validarCpf/12345678909
