@@ -1,4 +1,4 @@
-from dao.cnpj_dao import CNPJDao
+from cnpj_dao import CNPJDao
 
 class CNPJController:
     @staticmethod

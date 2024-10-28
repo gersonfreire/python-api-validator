@@ -1,4 +1,4 @@
-from dao.cpf_dao import CPFDao
+from dao.cnpj_dao import CPFDao
 
 class CPFController:
     @staticmethod
