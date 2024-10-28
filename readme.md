@@ -1,241 +1,120 @@
-### Plan
+# API de Validação e Geração de CPF e CNPJ
 
-1. **Project Structure**:
+Esta API oferece endpoints para validar e gerar números de CPF e CNPJ com base nas regras de validação estabelecidas. As regras de validação utilizadas nesta API seguem os cálculos descritos em [Regra de Validação para CPF e CNPJ](https://souforce.cloud/regra-de-validacao-para-cpf-e-cnpj-no-salesforce/).
 
-   - `app.py`: Main entry point for the Flask application.
-   - `controllers/cpf_controller.py`: Controller for CPF operations.
-   - `controllers/cnpj_controller.py`: Controller for CNPJ operations.
-   - `dao/cpf_dao.py`: Data Access Object for CPF operations.
-   - `dao/cnpj_dao.py`: Data Access Object for CNPJ operations.
-   - `tests/test_cpf_controller.py`: Unit tests for CPF controller.
-   - `tests/test_cnpj_controller.py`: Unit tests for CNPJ controller.
-   - `requirements.txt`: Dependencies for the project.
-2. **Dependencies**:
+## Endpoints Disponíveis
 
-   - Flask: Web framework.
-   - pytest: Testing framework.
-3. **Endpoints**:
+[URL base da API publicada](https://apivalida.monitor.eco.br:9002/ "URL Base")
 
-   - `/validarCpf/<cpf>`: Validate CPF.
-   - `/gerarCpf`: Generate CPF.
-   - `/validarCnpj/<cnpj>`: Validate CNPJ.
-   - `/gerarCnpj`: Generate CNPJ.
+## Uso
 
-### Code
+1. Crie a estrutura do projeto conforme descrito.
+2. Copie o código fornecido nos respectivos arquivos.
+3. Instale as dependências usando `pip install -r requirements.txt`.
+4. Execute o aplicativo Flask usando `python app.py`.
+5. Execute os testes usando `pytest`.
 
-#### `app.py`
+Isso deve fornecer uma API Python funcional semelhante ao projeto original.
 
-```python
-from flask import Flask, jsonify
-from controllers.cpf_controller import CPFController
-from controllers.cnpj_controller import CNPJController
+### Validar CPF
 
-app = Flask(__name__)
+**Endpoint:** `/validarcpf/:cpf`
 
-@app.route('/validarCpf/<cpf>', methods=['GET'])
-def validar_cpf(cpf):
-    response = CPFController.validar_cpf(cpf)
-    return jsonify(response)
+**Descrição:** Este endpoint permite a validação de um número de CPF fornecido como parâmetro. Ele retorna uma resposta indicando se o CPF é válido ou não, com base nas regras de validação estabelecidas.
 
-@app.route('/gerarCpf', methods=['GET'])
-def gerar_cpf():
-    response = CPFController.gerar_cpf()
-    return jsonify(response)
+**Requisição:**
 
-@app.route('/validarCnpj/<cnpj>', methods=['GET'])
-def validar_cnpj(cnpj):
-    response = CNPJController.validar_cnpj(cnpj)
-    return jsonify(response)
+- **Método:** GET
+- **Parâmetros:**
+  - `cpf` (string) - O número de CPF a ser validado.
 
-@app.route('/gerarCnpj', methods=['GET'])
-def gerar_cnpj():
-    response = CNPJController.gerar_cnpj()
-    return jsonify(response)
+**Exemplo de Requisição:**
 
-if __name__ == '__main__':
-    app.run(port=9002, debug=True)
+`GET /validarcpf/12345678909`
+
+**Resposta:**
+
+```json
+{
+  "valid": true,
+  "message": "O CPF é válido."
+}
 ```
 
-#### `controllers/cpf_controller.py`
+### Gerar CPF
 
-```python
-from dao.cpf_dao import CPFDao
+**Endpoint:** `/gerarcpf`
 
-class CPFController:
-    @staticmethod
-    def validar_cpf(cpf):
-        try:
-            response = CPFDao.validar_cpf(cpf)
-            return {
-                "valid": response,
-                "message": 'O CPF é valido' if response else 'O CPF é invalido'
-            }
-        except Exception as e:
-            raise e
+**Descrição:** Este endpoint permite a geração de um novo número de CPF válido de forma aleatória. O CPF gerado é retornado como resposta.
 
-    @staticmethod
-    def gerar_cpf():
-        try:
-            response = CPFDao.gerar_cpf()
-            return response
-        except Exception as e:
-            raise e
+**Requisição:**
+
+- **Método:** GET
+
+**Exemplo de Requisição:**
+`GET /gerarCpf`
+
+**Resposta:**
+
+```json
+{
+    "cpf": "123.456.789-09",
+    "cpf_formatado": "12345678909"
+}
 ```
 
-#### `controllers/cnpj_controller.py`
+### Validar CNPJ
 
-```python
-from dao.cnpj_dao import CNPJDao
+**Endpoint:** `/validarcnpj/:cnpj`
 
-class CNPJController:
-    @staticmethod
-    def validar_cnpj(cnpj):
-        try:
-            response = CNPJDao.validar_cnpj(cnpj)
-            return {
-                "valid": response,
-                "message": 'O CNPJ é valido' if response else 'O CNPJ é invalido'
-            }
-        except Exception as e:
-            raise e
+**Descrição:** Este endpoint permite a validação de um número de CNPJ fornecido como parâmetro. Ele retorna uma resposta indicando se o CNPJ é válido ou não, com base nas regras de validação estabelecidas.
 
-    @staticmethod
-    def gerar_cnpj():
-        try:
-            response = CNPJDao.gerar_cnpj()
-            return response
-        except Exception as e:
-            raise e
+**Requisição:**
+
+- **Método:** GET
+- **Parâmetros:**
+  - `cnpj` (string) - O número de CNPJ a ser validado.
+
+**Exemplo de Requisição:**
+
+`GET /validarcnpj/12345678000101`
+
+**Resposta:**
+
+```json
+{
+  "valid": true,
+  "message": "O CNPJ é válido."
+}
 ```
 
-#### `dao/cpf_dao.py`
+### Gerar CNPJ
 
-```python
-class CPFDao:
-    @staticmethod
-    def validar_cpf(cpf):
-        # Implement CPF validation logic here
-        pass
+**Endpoint:** `/gerarcnpj`
 
-    @staticmethod
-    def gerar_cpf():
-        # Implement CPF generation logic here
-        pass
+**Descrição:** Este endpoint permite a geração de um novo número de CNPJ válido de forma aleatória. O CNPJ gerado é retornado como resposta.
+
+**Requisição:**
+
+- **Método:** GET
+
+**Exemplo de Requisição:**
+`GET /gerarcnpj`
+
+**Resposta:**
+
+```json
+{
+    "cnpj": "12.345.678/0001-01",
+    "cnpj_formatado": "12345678000101"
+}
 ```
 
-#### `dao/cnpj_dao.py`
 
-```python
-class CNPJDao:
-    @staticmethod
-    def validar_cnpj(cnpj):
-        # Remove non-numeric characters
-        cnpj = ''.join(filter(str.isdigit, cnpj))
+## Considerações Finais
 
-        if len(cnpj) != 14:
-            return False
+Esta API oferece a validação e geração de CPF e CNPJ com base nas regras de validação estabelecidas, tornando-a uma ferramenta útil para diversas aplicações. Certifique-se de utilizar os endpoints corretamente de acordo com suas necessidades.
 
-        def calculate_digit(cnpj, weights):
-            total = sum(int(digit) * weight for digit, weight in zip(cnpj, weights))
-            remainder = total % 11
-            return 0 if remainder < 2 else 11 - remainder
+Para obter mais informações sobre as regras de validação utilizadas nesta API, consulte [Regra de Validação para CPF e CNPJ](https://souforce.cloud/regra-de-validacao-para-cpf-e-cnpj-no-salesforce/).
 
-        weights1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
-        weights2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
-
-        digit1 = calculate_digit(cnpj[:12], weights1)
-        digit2 = calculate_digit(cnpj[:13], weights2)
-
-        return cnpj[-2:] == f"{digit1}{digit2}"
-
-    @staticmethod
-    def gerar_cnpj():
-        import random
-
-        def calculate_digit(cnpj, weights):
-            total = sum(int(digit) * weight for digit, weight in zip(cnpj, weights))
-            remainder = total % 11
-            return 0 if remainder < 2 else 11 - remainder
-
-        cnpj = [random.randint(0, 9) for _ in range(8)] + [0, 0, 0, 1]
-        weights1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
-        weights2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
-
-        cnpj.append(calculate_digit(cnpj, weights1))
-        cnpj.append(calculate_digit(cnpj, weights2))
-
-        cnpj_str = ''.join(map(str, cnpj))
-        formatted_cnpj = f"{cnpj_str[:2]}.{cnpj_str[2:5]}.{cnpj_str[5:8]}/{cnpj_str[8:12]}-{cnpj_str[12:]}"
-
-        return {
-            "cnpj": cnpj_str,
-            "cnpj_formatado": formatted_cnpj
-        }
-```
-
-#### `tests/test_cpf_controller.py`
-
-```python
-import pytest
-from controllers.cpf_controller import CPFController
-
-def test_validar_cpf_valid():
-    # Mock CPFDao.validar_cpf to return True
-    CPFController.validar_cpf = lambda cpf: {"valid": True, "message": "O CPF é valido"}
-    response = CPFController.validar_cpf("12345678909")
-    assert response == {"valid": True, "message": "O CPF é valido"}
-
-def test_validar_cpf_invalid():
-    # Mock CPFDao.validar_cpf to return False
-    CPFController.validar_cpf = lambda cpf: {"valid": False, "message": "O CPF é invalido"}
-    response = CPFController.validar_cpf("12345678909")
-    assert response == {"valid": False, "message": "O CPF é invalido"}
-
-def test_gerar_cpf():
-    # Mock CPFDao.gerar_cpf to return a specific CPF
-    CPFController.gerar_cpf = lambda: "12345678909"
-    response = CPFController.gerar_cpf()
-    assert response == "12345678909"
-```
-
-#### `tests/test_cnpj_controller.py`
-
-```python
-import pytest
-from controllers.cnpj_controller import CNPJController
-
-def test_validar_cnpj_valid():
-    # Mock CNPJDao.validar_cnpj to return True
-    CNPJController.validar_cnpj = lambda cnpj: {"valid": True, "message": "O CNPJ é valido"}
-    response = CNPJController.validar_cnpj("12345678000195")
-    assert response == {"valid": True, "message": "O CNPJ é valido"}
-
-def test_validar_cnpj_invalid():
-    # Mock CNPJDao.validar_cnpj to return False
-    CNPJController.validar_cnpj = lambda cnpj: {"valid": False, "message": "O CNPJ é invalido"}
-    response = CNPJController.validar_cnpj("12345678000195")
-    assert response == {"valid": False, "message": "O CNPJ é invalido"}
-
-def test_gerar_cnpj():
-    # Mock CNPJDao.gerar_cnpj to return a specific CNPJ
-    CNPJController.gerar_cnpj = lambda: {"cnpj": "12345678000195", "cnpj_formatado": "12.345.678/0001-95"}
-    response = CNPJController.gerar_cnpj()
-    assert response == {"cnpj": "12345678000195", "cnpj_formatado": "12.345.678/0001-95"}
-```
-
-#### `requirements.txt`
-
-```
-Flask==2.0.1
-pytest==6.2.4
-```
-
-### Instructions
-
-1. Create the project structure as described.
-2. Copy the provided code into the respective files.
-3. Install the dependencies using `pip install -r requirements.txt`.
-4. Run the Flask application using `python app.py`.
-5. Run the tests using `pytest`.
-
-This should give you a functional Python API similar to the original JavaScript project.
+Aproveite os recursos desta API e integre-a em seus projetos para facilitar a validação e geração de CPF e CNPJ.
